@@ -1,0 +1,327 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+    <title>注册</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        .base{
+            height: 100%;
+            overflow: hidden;
+            background-image: url("/resource/image/register.jpg");
+        }
+        .backgroud{
+            margin: 0px;
+            height: 100%;
+            width: auto;
+            /*overflow: hidden;*/
+            align-content: center;
+        }
+        .main{
+            display: none;
+            width: 20%;
+            margin: auto;
+            background-color: white;
+            min-height: 260px;
+            padding: 20px 20px 20px 0px;
+            border: 1px solid #F0F1F1;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px black ;
+            margin-top: 150px;
+
+        }
+        .register-form{
+            /*display: none;*/
+        }
+        .login-form{
+            /*display: none;*/
+        }
+        .login-tittle{
+            width: 45%;
+            float: left;
+            text-align: center;
+            height: 50px;
+            font-size: 20px ;
+            margin-left: 25px;
+        }
+        .register-tittle{
+            width: 45%;
+            float: left;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .reandlo{
+            margin-top: 35px;
+        }
+        .login{
+            float: right;
+            width: 60px;
+            height: 40px;
+            margin-right: 30px;
+            font-size: 25px;
+            font-family: 黑体;
+            text-shadow: 1px 1px 1px black;
+        }
+        .register{
+            float: right;
+            width: 60px;
+            font-size: 25px;
+            height: 40px;
+            font-family: 黑体;
+            margin-right: 200px;
+            text-shadow: 1px 1px 1px black;
+        }
+        a.change{
+            color: white;
+        }
+        .form-button{
+            display:block;
+            margin:0 auto;
+            width: 60%;
+        }
+    </style>
+    <script type="text/javascript" src="/layui/layui.js"></script>
+    <script type="text/javascript">
+        function showlogin() {
+            document.getElementById("main").style.display = "block";
+            document.getElementsByTagName("title")[0].innerText = "登录"
+            document.getElementById("regisetrform").style.display = "none";
+            document.getElementById("loginform").style.display = "block";
+        }
+        function hidloginandregister() {
+            document.getElementById("main").style.display = "block";
+        }
+        function showregister() {
+            document.getElementById("main").style.display = "block";
+            document.getElementsByTagName("title")[0].innerText = "注册"
+            document.getElementById("regisetrform").style.display = "block";//打开注册表单
+            document.getElementById("loginform").style.display = "none";//关闭登入表单
+        }
+        window.onload=function (ev) {
+            showlogin()
+        }
+    </script>
+</head>
+<body>
+<div class="base">
+    <div class="reandlo">
+        <div class="register">
+            <a href="javascript:void(0)" onclick="showregister()" class="change">
+                注册
+            </a>
+        </div>
+        <div class="login">
+            <a href="javascript:void(0)" onclick="showlogin()" class="change">
+                登入
+            </a>
+        </div>
+    </div>
+    <div class="backgroud">
+        <div class="main" id="main">
+            <div class="login-tittle" ><a href="javascript:void(0)" onclick="showlogin()">登入</a></div>
+            <div style="float: left; width: 1px; height: 30px; background: black; display: inline-block"></div>
+            <div class="register-tittle"><a href="javascript:void(0)" onclick="showregister()">注册</a></div>
+            <div class="login-form" id="loginform">
+                <form class="layui-form" action="/login" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="phonenumber" required  lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input" id="loginphone">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" id="loginpassword">
+                        </div>
+                        <!--                                      <div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="">
+                            <button class="layui-btn layui-btn-lg layui-btn-normal layui-btn-fluid form-button" lay-submit lay-filter="formDemo">登录</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="register-form" id="regisetrform">
+                <form class="layui-form" action="/registered"  method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="email" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="float: right">
+                        <button type="button" class="layui-btn" onclick="sendEmail()">邮箱验证</button>
+                        <div class="layui-input-inline">
+                            <input type="text" id="vcode" name="vcode" required  lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">手机</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="phonenumber" name="phonenumber" required  lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="username" name="username" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                        </div>
+                        <!--                                       <div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认密码</label>
+                        <div class="layui-input-block">
+                            <input type="password" id="repassword" name="repassword" required lay-verify="required" placeholder="请再输入密码" autocomplete="off" class="layui-input">
+                        </div>
+                        <!--                                       <div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+                    </div>
+
+                    <!--                               生日日期-->
+                    <!--<div class="layui-form-item">
+                        &lt;!&ndash; 注意：这一层元素并不是必须的 &ndash;&gt;
+                        <label class="layui-form-label">生日</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id="test1" name="birthday">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">年龄</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="age"  placeholder="请输入年龄" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="sex" value="男" title="男">
+                            <input type="radio" name="sex" value="女" title="女" checked>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">个性签名</label>
+                        <div class="layui-input-block">
+                            <textarea name="signature" placeholder="请输入内容" class="layui-textarea"></textarea>
+                        </div>
+                    </div>-->
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="msg" th:value='${msg}'>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/layui/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/layui/layui.all.js"></script>
+<script>
+
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    });
+
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            //layer.msg(JSON.stringify(data.field));
+            var phone = document.getElementById("phonenumber").value;
+            var loginphone = document.getElementById("loginphone").value;
+            var display = document.getElementById("regisetrform").style.display;
+            var flag = true;
+            var pass = document.getElementById("password").value;
+            var repass = document.getElementById("repassword").value;
+            // 判断处于注册还是登录界面
+            if(display === "block"){
+                if((/^1[3|4|5|8][0-9]\d{4,8}$/).test(phone)){
+                    flag = true;
+                    if(pass === repass)
+                        flag = true;
+                    else{
+                        flag = false;
+                        alert("两次密码不一致！")
+                    }
+                }else {
+                    // if(!(/[1-9]\d{7,10}@qq\.com/).test(email)){
+                    //     alert("请使用QQ邮箱！");
+                    //     flag = false;
+                    // }
+                    if(!(/^1[3|4|5|8][0-9]\d{4,8}$/).test(phone)){
+                        alert("手机号填写错误！");
+                        flag = false;
+                    }
+                }
+            }
+            else {
+                if(!(/^1[3|4|5|8][0-9]\d{4,8}$/).test(loginphone)){
+                    alert("手机号填写错误！");
+                    flag = false;
+                }else {
+                    flag = true;
+                }
+            }
+            if(flag === true){
+
+                return true
+            }else {
+                return false;
+            }
+        });
+    });
+    function sendEmail() {
+        $.ajax({
+            url:'/sendemail',
+            type:'POST',
+            data:{
+                email:$("#email").val()
+            },
+            dataType: 'json',
+            success: function(data){
+                //data.msg
+                alert("发送邮件验证")
+            }
+        })
+    }
+    var data = $("#msg").val();
+    console.log(data);
+    if(data === "registeredfail"){
+        alert("该用户已经注册过！")
+
+    }else if(data === "registeredsuccess"){
+        alert("注册成功！")
+
+    }else if(data === "errorvcode"){
+        alert("验证码错误，注册失败")
+
+    }else if(data === "loginfail"){
+        alert("登录失败，手机号或密码错误！")
+
+    }
+
+</script>
+</body>
+</html>

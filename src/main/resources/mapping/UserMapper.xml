@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.zjh.websocket.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.zjh.websocket.pojo.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phonenumber" property="phonenumber" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="sign" property="sign" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!-- 查询所有用户 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from user
+    </select>
+
+<!--    根据id查找用户-->
+    <select id="selectUserById" resultMap="BaseResultMap">
+        select * from user where id = #{id}
+    </select>
+
+<!--    根据手机号查找用户-->
+    <select id="selectUserByPhone" resultMap="BaseResultMap">
+        select * from user where phonenumber = #{phonenumber}
+    </select>
+
+<!--    插入用户-->
+    <insert id="addUser" parameterType="com.zjh.websocket.pojo.User">
+        insert into user(phonenumber, username, password, email, sex, birthday, age, status, sign, avatar)
+        values (#{phonenumber}, #{username}, #{password}, #{email}, #{sex}, #{birthday}, #{age}, 0, #{sign}, '/resource/image/1.jpg')
+    </insert>
+
+<!--    更新用户-->
+    <update id="updateUser" parameterType="com.zjh.websocket.pojo.User">
+        update user
+        set phonenumber = #{phonenumber},
+            username = #{username},
+            password = #{password},
+            email = #{email},
+            sex = #{sex},
+            birthday = #{birthday},
+            age = #{age},
+            status = #{status},
+            sign = #{sign},
+            avatar = #{avatar}
+        where id = #{id}
+    </update>
+
+</mapper>

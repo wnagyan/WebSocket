@@ -1,0 +1,109 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/layui/css/layui.css}">-->
+
+
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">网缘</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item" >
+                <a href="javascript:;" >
+                    <img th:src="${user.getAvatar()}" class="layui-nav-img" th:text="${user.getUsername()}" id="username">
+
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/usercenter">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/logout">退出</a></li>
+        </ul>
+    </div>
+
+    <input type="hidden" id="msg" th:value='${msg}'>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+
+    </div>
+
+    <!--<div class="layui-footer">
+        &lt;!&ndash; 底部固定区域 &ndash;&gt;
+        © layui.com - 底部固定区域
+    </div>-->
+</div>
+
+<script src="/layui/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/layui/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+    var data = $("#msg").val();
+    console.log(data);
+    if(data === "hadlogin"){
+        alert("你已经登录过了，请不要重复登录！！")
+        document.getElementById("msg").innerText = "";
+    }else if(data === "loginsuccess"){
+        alert("登录成功！")
+        document.getElementById("msg").innerText = "";
+    }
+    layui.use('layim', function(layim){
+        var autoReplay = [
+            '您好，我现在有事不在，一会儿再和您联系。'
+        ];
+        brief: false,
+        layim.config({
+            // title: "wnagyan",
+            init: {
+                url: '/init' //接口地址（返回的数据格式见下文）
+                ,type: 'get' //默认get，一般可不填
+                ,data: {} //额外参数
+            } //获取主面板列表信息，下文会做进一步介绍
+            ,copyright: false
+            ,min:true
+            ,msgbox: layui.cache.dir + 'css/modules/layim/html/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
+            ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
+            ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可
+        })
+
+        //监听在线状态的切换事件
+        layim.on('online', function(status){
+            layer.msg(status);
+        });
+
+        //监听签名修改
+        layim.on('sign', function(value){
+            layer.msg(value);
+        });
+
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.websocket.dao.FriendGroupDao">
+    <resultMap id="BaseResultMap" type="com.zjh.websocket.pojo.FriendGroup">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="groupname" property="groupname" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <!-- 查询该用户id的所有好友列表 -->
+    <select id="selectAllFriendGroup" resultMap="BaseResultMap">
+        select * from friendgroup where uid = #{uid}
+    </select>
+
+    <!--    更改好友列表名称-->
+    <update id="updateGroupName" parameterType="com.zjh.websocket.pojo.FriendGroup">
+        update friendgroup
+        set groupname = #{groupname}
+        where uid = #{uid}
+    </update>
+
+<!--    添加好友列表-->
+    <insert id="addFriendGroup" parameterType="com.zjh.websocket.pojo.FriendGroup">
+        insert into friendgroup(uid, groupname) VALUES (#{uid}, #{groupname})
+    </insert>
+
+</mapper>

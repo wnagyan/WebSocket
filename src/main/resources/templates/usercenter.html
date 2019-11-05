@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+
+<form class="layui-form" action="/update" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block" >
+            <input type="text" th:value="${user.getUsername()}" required  lay-verify="required" name="username" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <!-- 注意：这一层元素并不是必须的 -->
+        <label class="layui-form-label">生日</label>
+        <div class="layui-input-block">
+            <input type="text" th:value="${user.getBirthday()}" class="layui-input" id="test1" name="birthday">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">年龄</label>
+        <div class="layui-input-block">
+            <input type="text" th:value="${user.getAge()}" name="age" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单选框</label>
+        <div class="layui-input-block" >
+            <input type="radio" name="sex" value="男" title="男" th:checked="${user.getSex()=='男'}? true : false">
+            <input type="radio" name="sex" value="女" title="女" th:checked="${user.getSex()=='女'}? true : false">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">个人签名</label>
+        <div class="layui-input-block">
+            <textarea name="sign" th:text="${user.getSign()}" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+        </div>
+    </div>
+</form>
+
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    });
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            alert("保存成功！");
+            return true;
+        });
+    });
+</script>
+</body>
+</html>

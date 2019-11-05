@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjh.websocket.dao.FriendDao">
+    <resultMap id="BaseResultMap" type="com.zjh.websocket.pojo.Friend">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="fid" property="fid" jdbcType="INTEGER"/>
+        <result column="fgid" property="fgid" jdbcType="INTEGER"/>
+        <result column="notename" property="notename" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!-- 查询该用户id的所有好友 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select fid from friends where uid = #{uid}
+    </select>
+
+<!--    根据好友分组id查询该分组下的所有好友-->
+    <select id="selectAllFriendByFgId" resultMap="BaseResultMap">
+        select fid from friends where fgid = #{fgid}
+    </select>
+
+<!--    添加备注-->
+    <update id="addNoteName" parameterType="com.zjh.websocket.pojo.Friend">
+        update friends
+        set notename = #{notename}
+        where uid = #{uid} and fid = #{fid}
+    </update>
+
+    <!--    添加好友-->
+    <insert id="addFriend" parameterType="com.zjh.websocket.pojo.Friend">
+        insert into friends(uid, fid, fgid) values (#{uid}, #{fid}, 0)
+    </insert>
+
+<!--    删除好友-->
+    <delete id="deleteFriend" parameterType="com.zjh.websocket.pojo.Friend">
+        delete * from friends where uid = #{uid} and fid = #{fid}
+    </delete>
+</mapper>
