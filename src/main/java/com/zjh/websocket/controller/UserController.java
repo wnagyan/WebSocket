@@ -44,12 +44,14 @@ public class UserController {
      * 1、从session中取出用户
      * 2、将用户的state设置为0，意味者用户不在线
      * 3、将session中的用户移除，然后跳转到registered界面
-     * @param request
+     * @param
      * @return
      */
     @RequestMapping(value = "/logout")
-    public String exit(HttpServletRequest request, HttpSession httpSession){
-        User user = (User) request.getSession().getAttribute("user");
+    public String exit(HttpSession httpSession){
+        User user = (User) httpSession.getAttribute("user");
+        if(user == null)
+            return "redirect:registered";
         //System.out.println(user);
         user.setStatus(0);
         userService.updateUser(user);
@@ -62,6 +64,10 @@ public class UserController {
     @RequestMapping(value = "/usercenter")
     public String lookuser(HttpServletRequest httpServletRequest, Model model){
         User user = (User) httpServletRequest.getSession().getAttribute("user");
+        if(user == null){
+            return "redirect:registered";
+        }
+
         model.addAttribute(user);
         return "usercenter";
     }
@@ -69,6 +75,8 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String updateuser(User user, HttpServletRequest httpServletRequest){
         User people = (User) httpServletRequest.getSession().getAttribute("user");
+        if(people == null)
+            return "redirect:registered";
         people.setBirthday(user.getBirthday());
         people.setUsername(user.getUsername());
         people.setAge(user.getAge());

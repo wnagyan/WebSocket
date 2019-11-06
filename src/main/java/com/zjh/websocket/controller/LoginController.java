@@ -33,11 +33,10 @@ public class LoginController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String login(HttpServletRequest request, Model model) {
         User user = (User) request.getSession().getAttribute("user");
-        model.addAttribute(user);
-
         if(user == null){
             return "registered";
         }
+        model.addAttribute(user);
         return "index";
     }
 
@@ -59,11 +58,12 @@ public class LoginController {
             people.setStatus(1);
             userService.updateUser(people);
             httpSession.setAttribute("user", people);
-
+            httpSession.setMaxInactiveInterval(43200);
             redirectAttributesModelMap.addFlashAttribute("msg", "loginsuccess");
             return "redirect:index";
         }else if(people != null && people.getStatus() == 1 && people.getPassword().equals(user.getPassword())){
             httpSession.setAttribute("user", people);
+            httpSession.setMaxInactiveInterval(43200);
             redirectAttributesModelMap.addFlashAttribute("msg", "hadlogin");
             return "redirect:index";
         }else {
